@@ -1,0 +1,325 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Globalization" #>
+<#@ import namespace="CityParking.Models" #>
+<#@ template debug="true" #>
+
+<# if(invData.locationId == 1){ #> 
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td>
+	<img src="http://www.stgag.ch/fileadmin/templates/img/logos/Logo_KSM.gif"/>		
+	<p> Spitalcampus 1, <br/> 8596 Münsterlingen, Schweiz <br/> Tel:+41 71 686 11 11 </p>
+	<table border="0" cellpadding="0" cellspacing="4" width="100%">
+		<tr>
+			<th valign="top" align="right" width="100%" colspan="2" font size=2><h1>Beleg</h1></th>
+		</tr>
+		<tr><td width="100%" height="2" colspan="2" bgcolor="#000000" ></td></tr>
+		<tr>
+			<td width="50%">				
+				<p><b>In Rechnung gestellt:</b><br/><#= invData.firstName + " " + invData.lastName#><br/><#= invData.email #>	</p>						
+			</td>					
+			<td width="50%" align="right">	
+				<table>
+					<tr>
+						<td align="left"><b>Eingangsdatum:</b></td>
+						<td align="right"> <#= DateTime.Now.ToString("dd.MM.yyyy") #></td>
+					</tr>
+					<tr>
+						<td align="left"><b>Endbetrag:</b></td>
+						<td align="right"> <#= CityParking.Services.InvoiceService.formatToChf(invData.totalAmount) #> CHF</td>
+					</tr>
+					<tr>
+						<td align="left"><b>Rechnungan:</b></td>
+						<td align="right"><#= invData.ccDetails#></td>
+					</tr>
+				</table>
+			</td>			
+		</tr>
+		<tr><td width="100%"  colspan="2"><br/><br/><br/><br/></td></tr>
+
+	</table>
+
+	<table border="0" cellpadding="0" cellspacing="0" width="100%">
+		<tr><td width="100%" height="2" colspan="3" bgcolor="#000000" ></td></tr>
+		<tr>
+			<th valign="middle" align="left" width="30%">Datum/Zeit</th>
+			<th valign="middle" align="center" width="30%">Parkplatz Nummer</th>
+			<th valign="middle" align="right" width="30%">Betrag</th>
+		</tr>
+		<tr><td width="100%" height="2" colspan="3" bgcolor="#000000" ></td></tr>		
+		
+		<# foreach (CityParking.Models.PaymentDetails payment in invData.payments){ #>
+			<tr>
+				<td valign="middle" align="left" width="30%"><#= CityParking.Services.InvoiceService.timestampToShortDate(payment.parkingDate) #></td>
+				<td valign="middle" align="center" width="30%"><#= payment.parkingSpot #></td>
+				<td valign="middle" align="right" width="30%"><#= CityParking.Services.InvoiceService.formatToChf(payment.parkingPrice) #> CHF</td>
+			</tr>
+		<#}
+		#>
+		
+
+		<tr><td width="100%" height="2" colspan="3" bgcolor="#000000" ></td></tr>		
+		<tr>
+			<td  valign="top" align="right" width="100%" colspan="3">Endbetrag:     <#= CityParking.Services.InvoiceService.formatToChf(invData.totalAmount)#> CHF</td>
+		</tr>
+		<tr><td width="100%" height="2" colspan="3" bgcolor="#000000" ></td></tr>		
+	</table>
+</td>
+</tr>
+<tr class="spacerRow"><td width="100%" ><br/><br/><br/><br/></td></tr>	
+<tr>
+<td>	
+	<p>Wir freuen uns auf Ihren nächsten Besuch! </br>Kantonsspital Münsterlingen</p><br/><br/><br/><br/>
+	<p>(Dies ist eine automatisch versendete Nachricht. Bitte antworten Sie nicht auf dieses Schreiben, da die Adresse nur zur Versendung von E-Mails eingerichtet ist.)</p>
+</td>
+</tr>	
+</table>
+</body>
+</html>
+<# } else if(invData.locationId == 2){ #>
+
+
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td>
+	<table border="0" cellpadding="0" cellspacing="4" width="100%">
+		<tr>
+			<th valign="top" align="right" width="100%" colspan="2" font size=2><h1>Kvitto</h1></th>
+		</tr>
+		<tr><td width="100%" height="2" colspan="2" bgcolor="#000000" ></td></tr>
+		<tr>
+			<td width="50%">				
+				<p><b>Faktureras:</b><br/><#= invData.firstName + " " + invData.lastName#><br/><#= invData.email #>	</p>						
+			</td>					
+			<td width="50%" align="right">	
+				<table>
+					<tr>
+						<td align="left"><b>Kvitto datum:</b></td>
+						<td align="right"> <#= DateTime.Now.ToString("dd.MM.yyyy") #></td>
+					</tr>
+					<tr>
+						<td align="left"><b>Totalbelopp:</b></td>
+						<td align="right"> <#= CityParking.Services.InvoiceService.formatToSek(invData.totalAmount) #> SEK </td>
+					</tr>
+					<tr>
+						<td align="left"><b>Faktureras till to:</b></td>
+						<td align="right"><#= invData.ccDetails#></td>
+					</tr>
+				</table>
+			</td>			
+		</tr>
+		<tr><td width="100%"  colspan="2"><br/><br/><br/><br/></td></tr>
+
+	</table>
+
+	<table border="0" cellpadding="0" cellspacing="0" width="100%">
+		<tr><td width="100%" height="2" colspan="3" bgcolor="#000000" ></td></tr>
+		<tr>
+			<th valign="middle" align="left" width="30%">Datum/tid</th>
+			<th valign="middle" align="center" width="30%">Registreringsnummer</th>
+			<th valign="middle" align="right" width="30%">Belopp</th>
+		</tr>
+		<tr><td width="100%" height="2" colspan="3" bgcolor="#000000" ></td></tr>		
+		
+		<# foreach (CityParking.Models.PaymentDetails payment in invData.payments){ #>
+			<tr>
+				<td valign="middle" align="left" width="30%"><#= CityParking.Services.InvoiceService.timestampToShortDate(payment.parkingDate) #></td>
+				<td valign="middle" align="center" width="30%"><#= payment.carNumberPlate #></td>
+				<td valign="middle" align="right" width="30%"><#= CityParking.Services.InvoiceService.formatToSek(payment.parkingPrice) #> SEK </td>
+			</tr>
+		<#}
+		#>
+		
+
+		<tr><td width="100%" height="2" colspan="3" bgcolor="#000000" ></td></tr>		
+		<tr>
+			<td  valign="top" align="right" width="100%" colspan="3">Totalt:     <#= CityParking.Services.InvoiceService.formatToSek(invData.totalAmount) #> SEK </td>
+		</tr>
+		<tr><td width="100%" height="2" colspan="3" bgcolor="#000000" ></td></tr>		
+	</table>
+</td>
+</tr>
+<tr class="spacerRow"><td width="100%" ><br/><br/><br/><br/></td></tr>	
+<tr>
+<td>	
+	<p>Tack för besöket!</p><br/><br/><br/><br/>
+	<p>(Detta är ett automatgenererat meddelande. Vänligen svara inte på detta då adressen endast används för att skicka meddelanden.)</p>
+</td>
+</tr>	
+</table>
+</body>
+</html>
+
+<# } else if(invData.locationId == 4){ #>
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td>
+	<p>  </p>
+	<table border="0" cellpadding="0" cellspacing="4" width="100%">
+		<tr>
+			<th valign="top"><img src="http://5.9.142.182:1013/Images/GmdePratteln_3-6-83-0_300dpi.png" width="120" height="64"/></th>
+			<th valign="top" align="right" width="100%" font size=2><h1>Beleg</h1></th>
+		</tr>
+		<tr><td width="100%" height="2" colspan="2" bgcolor="#000000" ></td></tr>
+		<tr>
+			<td width="50%">				
+				<p><b>In Rechnung gestellt:</b><br/><#= invData.firstName + " " + invData.lastName#><br/><#= invData.email #>	</p>						
+			</td>					
+			<td width="50%" align="right">	
+				<table>
+					<tr>
+						<td align="left"><b>Eingangsdatum:</b></td>
+						<td align="right"> <#= DateTime.Now.ToString("dd.MM.yyyy") #></td>
+					</tr>
+					<tr>
+						<td align="left"><b>Endbetrag:</b></td>
+						<td align="right"> <#= CityParking.Services.InvoiceService.formatToChf(invData.totalAmount) #> CHF</td>
+					</tr>
+					<tr>
+						<td align="left"><b>Rechnungan:</b></td>
+						<td align="right"><#= invData.ccDetails#></td>
+					</tr>
+				</table>
+			</td>			
+		</tr>
+		<tr><td width="100%"  colspan="2"><br/><br/><br/><br/></td></tr>
+
+	</table>
+
+	<table border="0" cellpadding="0" cellspacing="0" width="100%">
+		<tr><td width="100%" height="2" colspan="3" bgcolor="#000000" ></td></tr>
+		<tr>
+			<th valign="middle" align="left" width="30%">Datum/Zeit</th>
+			<th valign="middle" align="center" width="30%">KFZ Kennzeichen</th>
+			<th valign="middle" align="right" width="30%">Betrag</th>
+		</tr>
+		<tr><td width="100%" height="2" colspan="3" bgcolor="#000000" ></td></tr>		
+		
+		<# foreach (CityParking.Models.PaymentDetails payment in invData.payments){ #>
+			<tr>
+				<td valign="middle" align="left" width="30%"><#= CityParking.Services.InvoiceService.timestampToShortDate(payment.parkingDate) #></td>
+				<td valign="middle" align="center" width="30%"><#= payment.carNumberPlate #></td>
+				<td valign="middle" align="right" width="30%"><#= CityParking.Services.InvoiceService.formatToChf(payment.parkingPrice) #> CHF</td>
+			</tr>
+		<#}
+		#>
+		
+
+		<tr><td width="100%" height="2" colspan="3" bgcolor="#000000" ></td></tr>		
+		<tr>
+			<td  valign="top" align="right" width="100%" colspan="3">Endbetrag:     <#= CityParking.Services.InvoiceService.formatToChf(invData.totalAmount)#> CHF</td>
+		</tr>
+		<tr><td width="100%" height="2" colspan="3" bgcolor="#000000" ></td></tr>		
+	</table>
+</td>
+</tr>
+<tr class="spacerRow"><td width="100%" ><br/><br/><br/><br/></td></tr>	
+<tr>
+<td>	
+	<p>Wir freuen uns auf Ihren nächsten Besuch! </br>Stadt Pratteln</p><br/><br/><br/><br/>
+	<p>(Dies ist eine automatisch versendete Nachricht. Bitte antworten Sie nicht auf dieses Schreiben, da die Adresse nur zur Versendung von E-Mails eingerichtet ist.)</p>
+</td>
+</tr>	
+</table>
+</body>
+</html>
+<# } else if (invData.locationId == 3){#>
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td>
+	<table border="0" cellpadding="0" cellspacing="4" width="100%">
+		<tr>
+			<th valign="top" align="right" width="100%" colspan="2" font size=2><h1>Receipt</h1></th>
+		</tr>
+		<tr><td width="100%" height="2" colspan="2" bgcolor="#000000" ></td></tr>
+		<tr>
+			<td width="50%">				
+				<p><b>Billed to:</b><br/><#= invData.firstName + " " + invData.lastName#><br/><#= invData.email #>	</p>						
+			</td>					
+			<td width="50%" align="right">	
+				<table>
+					<tr>
+						<td align="left"><b>Receipt date:</b></td>
+						<td align="right"> <#= DateTime.Now.ToString("dd.MM.yyyy") #></td>
+					</tr>
+					<tr>
+						<td align="left"><b>Order Total:</b></td>
+						<td align="right"> <#= invData.totalAmount.ToString("C2",new System.Globalization.CultureInfo("en-US")) #> </td>
+					</tr>
+					<tr>
+						<td align="left"><b>Billed to:</b></td>
+						<td align="right"><#= invData.ccDetails#></td>
+					</tr>
+				</table>
+			</td>			
+		</tr>
+		<tr><td width="100%"  colspan="2"><br/><br/><br/><br/></td></tr>
+
+	</table>
+
+	<table border="0" cellpadding="0" cellspacing="0" width="100%">
+		<tr><td width="100%" height="2" colspan="3" bgcolor="#000000" ></td></tr>
+		<tr>
+			<th valign="middle" align="left" width="30%">Date/Time</th>
+			<th valign="middle" align="center" width="30%">Car Number Plate</th>
+			<th valign="middle" align="right" width="30%">Price</th>
+		</tr>
+		<tr><td width="100%" height="2" colspan="3" bgcolor="#000000" ></td></tr>		
+		
+		<# foreach (CityParking.Models.PaymentDetails payment in invData.payments){ #>
+			<tr>
+				<td valign="middle" align="left" width="30%"><#= CityParking.Services.InvoiceService.timestampToShortDate(payment.parkingDate) #></td>
+				<td valign="middle" align="center" width="30%"><#= payment.carNumberPlate #></td>
+				<td valign="middle" align="right" width="30%"><#= payment.parkingPrice.ToString("C2",new System.Globalization.CultureInfo("en-US")) #> </td>
+			</tr>
+		<#}
+		#>
+		
+
+		<tr><td width="100%" height="2" colspan="3" bgcolor="#000000" ></td></tr>		
+		<tr>
+			<td  valign="top" align="right" width="100%" colspan="3">Order Total:     <#= invData.totalAmount.ToString("C2",new System.Globalization.CultureInfo("en-US"))#> </td>
+		</tr>
+		<tr><td width="100%" height="2" colspan="3" bgcolor="#000000" ></td></tr>		
+	</table>
+</td>
+</tr>
+<tr class="spacerRow"><td width="100%" ><br/><br/><br/><br/></td></tr>	
+<tr>
+<td>	
+	<p>Thanks for visiting our parking lot!</p><br/><br/><br/><br/>
+	<p>(This is an automatic message sent. Please do not reply to this letter because the address is only for sending e-mails.)</p>
+</td>
+</tr>	
+</table>
+</body>
+</html>
+<# } #>

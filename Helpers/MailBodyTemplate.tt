@@ -1,0 +1,94 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Globalization" #>
+<#@ import namespace="CityParking.Models" #>
+<#@ template debug="true" #>
+
+<# if(invData.locationId == 1){ #> 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+
+</head>
+<body style="font-family : Arial;">
+	<p>Sehr geehrter <#= invData.firstName + " " + invData.lastName #>,</p>
+	</br></br>
+	<p>Ihre Rechnung beläuft sich auf: <#= CityParking.Services.InvoiceService.formatToChf(invData.totalAmount) #> CHF</p>
+	</br>
+	<p>Neben der Rechnung finden Sie hier auch einen detaillierten Einzelverbindungsnachweis.</p>
+	<p>Zur Ansicht Ihrer Rechnung benötigen Sie das Programm Acrobat Reader, das Sie kostenlos unter <a href="http://www.adobe.com/de/products/reader.html">get.adobe.com/Reader</a> herunterladen können.</p>
+	</br>
+	<p>Bei Fragen oder Anregungen stehen wir Ihnen gerne zur Verfügung!</p>
+	</br>
+	<p>Wir freuen uns auf Ihren nächsten Besuch!</p>
+	<p>Kantonsspital Münsterlingen</p>
+	<p>Spitalcampus 1,</p>
+	<p>8596 Münsterlingen, Schweiz </p>
+	<p>Tel:+41 71 686 11 11</p>
+	</br>
+	<p><b><u>Hinweis: Bitte antworten Sie nicht auf diese vom System versendete Nachricht. Diese Emails können leider nicht beantwortet werden.</u></b></p>
+	</body>
+</html>
+
+
+
+<# } else if(invData.locationId == 2){ #>
+
+
+
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+
+</head>
+<body style="font-family : Arial;">
+	<p><#= invData.firstName + " " + invData.lastName #>,</p>
+	</br></br>
+	<p>Det totala beloppet är: <#= CityParking.Services.InvoiceService.formatToSek(invData.totalAmount) #> SEK </p>
+	</br>
+	<p>Utöver detta finns även en detaljerad faktura. Detaljerad faktura.</p>
+	<p>För att öppna den detaljerade fakturan behöver du Acrobat Reader som kan laddas hem från <a href="http://www.adobe.com/de/products/reader.html">get.adobe.com/Reader</a> gratis.</p>
+	</br>
+	<p>För frågor eller förslag vänligen kontakta oss!</p>
+	</br>
+	<p>Vi ser fram emot ett snart återseende!</p>
+	</br>
+	<p><b><u>Notera: Vänligen svara inte på detta meddelande då dessa inte besvaras.</u></b></p>
+	</body>
+</html>
+
+
+
+<# } else if(invData.locationId == 3){ #>
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+
+</head>
+<body style="font-family : Arial;">
+	<p>Dear <#= invData.firstName + " " + invData.lastName #>,</p>
+	</br></br>
+	<p>Your total order is: <#= invData.totalAmount.ToString("C2",new System.Globalization.CultureInfo("en-US")) #> </p>
+	</br>
+	<p>In addition to the payment, you will also find a detailed invoice here.</p>
+	<p>To view your bill, you will need Acrobat Reader which can be downloaded from <a href="http://get.adobe.com/reader/">get.adobe.com/Reader</a> for free.</p>
+	</br>
+	<p>For questions or suggestions please contact us at your disposal!</p>
+	</br>
+	<p>We look forward to your next visit!</p>
+	</br>
+	<p><b><u>Note: Please do not reply to this message sent by the system. Unfortunately, these emails can not be answered.</u></b></p>
+	</body>
+</html>
+<# } #>
